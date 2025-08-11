@@ -1,0 +1,38 @@
+package rules
+
+import com.maddie.DroolsComplexRule.PaymentOffers;
+
+rule "Offer for Paytm"
+//salience fixes the priority of the offer rule
+salience 3
+when 
+    offerObject: PaymentOffers(channel == "paytm")
+then
+    offerObject.setDiscount(offerObject.getDiscount() + 5);
+    System.out.println("Offer only for paytm");
+end
+rule "Offer for paytmin xmas"
+salience 2
+when 
+    offerObject: PaymentOffers(channel == "paytm") && PaymentOffers(festival == "xmas")
+then
+    offerObject.setDiscount(offerObject.getDiscount() + 7);
+    System.out.println("Offer only for paytm and xmas");
+end
+
+rule "First time customer"
+salience 1
+when 
+    offerObject: PaymentOffers(firstTimeCustomer)
+then
+    offerObject.setDiscount(offerObject.getDiscount() + 10);
+    System.out.println("First time customer");
+end
+rule "Offer for PhonePe"
+when 
+    offerObject: PaymentOffers(channel == "phonepe")
+then
+    offerObject.setDiscount(offerObject.getDiscount() + 15);
+    System.out.println("Offer only for phonepe");
+end
+
